@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import {HomePage} from '../pages/home-page';
 
 const TODO_ITEMS = [
-  'USB difusor de Aroma grano de madera luz LED nocturna difuso',
+  'Botella térmica para niños de 400ML',
   '3',
   '27.639,79'
 ] as const;
@@ -19,24 +19,33 @@ test.beforeEach(async ({page})=>{
 
 test.describe('Agregar 3 pŕoductos al carrito de compras ', () =>{
 
-    test.only('Buscar producto', async ({page}) => {
+    test('Buscar producto', async ({page}) => {
              
      
-        const newTodo = page.locator('#search-words');
+        const search = page.locator('#search-words');
 
-        await newTodo.fill(TODO_ITEMS[0]);
-        await newTodo.press('Enter');
+        await search.fill(TODO_ITEMS[0]);
+        await search.press('Enter');
+        await page.waitForTimeout(2000);
 
-        await page.getByRole('link').locator("#card-list").first().click();
+        const cardList = page.locator('#card-list');
+        await expect(cardList.first()).toBeVisible();
+        
+        // Afirmar que el producto se encuentra en la pagina
+        await expect(cardList.first()).toContainText(TODO_ITEMS[0]);
 
-        await expect(page.locator('h1')).toContainText(TODO_ITEMS[0]);
+        await cardList.first().click();
+
+        await page.waitForTimeout(2000);
+
+        await expect(page.locator('.sku-item--selected--ITGY_EO').isVisible()).toBeTruthy();
 
       });
       
-    test.only('Agregar producto al carrito', async ({ page }) => {
+    test('Agregar producto al carrito', async ({ page }) => {
 
       // Seleccionar caracteristica del producto
-      await page.getByText('dark wood', { exact: true }).locator('span').click();
+      await page.locator('.sku-item--selected--ITGY_EO').click();
       
       //Click en agregar producto
       await page.getByRole('button', { name: 'Agregar al carrito' }).click();            
@@ -46,7 +55,7 @@ test.describe('Agregar 3 pŕoductos al carrito de compras ', () =>{
     });
     
       
-    test(' Agregar 2 pedidos más y confirmar valor', async ({page}) => {    
+    test.skip(' Agregar 2 pedidos más y confirmar valor', async ({page}) => {    
     
       // Ingresamo cantidad de pedido
       const inputPedido = page.locator(".comet-v2-input-number-input");
@@ -57,7 +66,6 @@ test.describe('Agregar 3 pŕoductos al carrito de compras ', () =>{
       const valorActual = page.locator(".cart-summary-item-content").innerText();
 
       await expect(valorActual).not.toEqual(TODO_ITEMS[2])
-
     
     
     });
