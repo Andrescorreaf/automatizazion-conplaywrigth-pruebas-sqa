@@ -59,6 +59,12 @@ cd automatizazion-conplaywrigth-pruebas-sqa
 * Mantén tus pruebas limpias y enfocadas solo en la verificación.
 * Utiliza test.describe y test.beforeEach para organizar pruebas.
 
+## 🧑‍💻 Autor
+Andres Correa
+
+* 📧 felipefranco989@gmail.com
+* 🌐 github.com/Andrescorreaf
+
 ## 📄 Licencia
 Este proyecto está bajo la licencia MIT.
 
